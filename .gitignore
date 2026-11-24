@@ -1,0 +1,15 @@
+# C418 music is copyrighted: keep the audio files and the music-embedded build local only
+musics/*.opus
+build/music-cache/
+block-defence.html
+blok-savunmasi.html
+
+# build output
+dist/
+build/test.html
+build/test/shots/
+build/test/prof*/
+
+# tooling
+__pycache__/
+.netlify

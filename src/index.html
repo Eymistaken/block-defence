@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>Blok Savunması</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>/*@CSS@*/</style>
+</head>
+<body class="menu">
+<div id="app">
+  <!-- ÜST ÇUBUK -->
+  <div id="topbar">
+    <div class="stat" id="stHearts" title="Can"><canvas id="icoHeart" width="9" height="8"></canvas><span id="stLives">20</span></div>
+    <div class="stat" title="Zümrüt"><canvas id="icoEm" width="8" height="8"></canvas><span id="stMoney">0</span></div>
+    <div class="stat" id="stSoulBox" title="Ruh (Sift)"><canvas id="icoSoul" width="8" height="8"></canvas><span id="stSouls">0</span></div>
+    <div class="stat"><span id="stWave">Dalga 0/15</span></div>
+    <div class="stat"><span id="stTime">☀ Gündüz</span></div>
+    <div class="stat" id="stMechBox"><span id="stMech"></span></div>
+    <div class="stat" id="stMapBox"><span id="stMap">Harita</span></div>
+    <div class="grow"></div>
+    <button class="mc-btn sm" id="btnInv" title="Envanter (Tab / I)">🎒 Envanter</button>
+    <button class="mc-btn sm" id="btnSpeed" title="Oyun hızı (F)">1x</button>
+    <button class="mc-btn sm" id="btnPause" title="Duraklat (P / Esc)">❚❚</button>
+  </div>
+
+  <div id="stage">
+    <canvas id="game"></canvas>
+    <div id="bossbar"><div class="name" id="bossName">Boss</div><div class="bar"><div class="fill" id="bossFill"></div></div><div class="sub" id="bossSub"></div></div>
+    <div id="banner"></div>
+    <div id="hint"></div>
+    <div id="towerPanel" class="mc-panel"></div>
+    <div id="toasts"></div>
+
+    <!-- ANA MENÜ -->
+    <div class="screen show" id="scrMenu">
+      <div class="logo"><h1>BLOK<br><span>SAVUNMASI</span></h1><div class="sub">DÖRT BOYUT · KULE SAVUNMA</div><div class="splash" id="splash">Kaz, kur, koru!</div></div>
+      <div class="col menu-btns">
+        <button class="mc-btn wide" id="mPlay">Oyna</button>
+        <div class="half"><button class="mc-btn wide" id="mPerks">Büyü Masası</button><button class="mc-btn wide" id="mAch">Başarımlar</button></div>
+        <div class="half"><button class="mc-btn wide" id="mBook">Ansiklopedi</button><button class="mc-btn wide" id="mSettings">Ayarlar</button></div>
+      </div>
+      <div class="foot"><span id="footLvl">Seviye 0</span><span>Blok Savunması v2.0 · Overworld · Nether · End · Sift</span></div>
+    </div>
+
+    <!-- DÜNYA SEÇİMİ -->
+    <div class="screen dirt" id="scrLevels">
+      <h2>Dünya Seç</h2>
+      <div class="row" id="dimTabs"></div>
+      <div class="dimdesc" id="dimDesc"></div>
+      <div class="row" style="margin:6px 0 8px"><span class="optlbl">Mod:</span><button class="mc-btn sm" data-mode="campaign">Macera</button><button class="mc-btn sm" data-mode="endless">Sonsuz</button></div>
+      <div id="levelGrid"></div>
+      <div class="row"><span class="optlbl">Zorluk:</span><button class="mc-btn sm" data-diff="easy">Kolay</button><button class="mc-btn sm" data-diff="normal">Normal</button><button class="mc-btn sm" data-diff="hard">Zor</button><button class="mc-btn sm" data-diff="creative">Yaratıcı</button></div>
+      <div class="diffdesc" id="diffDesc"></div>
+      <div class="row" style="margin-top:10px"><button class="mc-btn" id="lvBack">Geri</button><button class="mc-btn green" id="lvStart" style="min-width:220px">Dünyaya Gir</button></div>
+    </div>
+
+    <!-- BÜYÜ MASASI -->
+    <div class="screen dirt" id="scrPerks">
+      <h2>Büyü Masası</h2>
+      <div class="ptsinfo" id="perkPts"></div>
+      <div id="perkGrid"></div>
+      <div class="row"><button class="mc-btn" id="pkBack">Geri</button><button class="mc-btn red" id="pkReset">Puanları Sıfırla</button></div>
+    </div>
+
+    <!-- BAŞARIMLAR -->
+    <div class="screen dirt" id="scrAch">
+      <h2>Başarımlar</h2>
+      <div class="ptsinfo" id="achInfo"></div>
+      <div id="achGrid"></div>
+      <div class="row"><button class="mc-btn" id="acBack">Geri</button></div>
+    </div>
+
+    <!-- ANSİKLOPEDİ -->
+    <div class="screen dirt" id="scrBook">
+      <h2>Ansiklopedi</h2>
+      <div class="row" id="bookTabs">
+        <button class="mc-btn sm" data-tab="help">Nasıl Oynanır</button>
+        <button class="mc-btn sm" data-tab="dims">Boyutlar</button>
+        <button class="mc-btn sm" data-tab="towers">Kuleler</button>
+        <button class="mc-btn sm" data-tab="enemies">Yaratıklar</button>
+        <button class="mc-btn sm" data-tab="bosses">Bosslar</button>
+        <button class="mc-btn sm" data-tab="items">Eşyalar</button>
+        <button class="mc-btn sm" data-tab="mine">Madencilik</button>
+        <button class="mc-btn sm" data-tab="music">Müzik Kutusu</button>
+      </div>
+      <div class="row" id="bookFilter"></div>
+      <div id="bookBody"></div>
+      <div class="row"><button class="mc-btn" id="bkBack">Geri</button></div>
+    </div>
+
+    <!-- AYARLAR -->
+    <div class="screen dirt" id="scrSettings">
+      <h2>Ayarlar</h2>
+      <div class="setgrid">
+        <label class="slider"><span id="lblMusic">Müzik: 50%</span><input type="range" min="0" max="100" id="setMusic"></label>
+        <label class="slider"><span id="lblSfx">Ses Efektleri: 70%</span><input type="range" min="0" max="100" id="setSfx"></label>
+        <button class="mc-btn" id="setMusMode"></button>
+        <button class="mc-btn" id="setDmg"></button>
+        <button class="mc-btn" id="setShake"></button>
+        <button class="mc-btn" id="setPart"></button>
+        <button class="mc-btn" id="setAuto"></button>
+        <button class="mc-btn" id="setRanges"></button>
+        <button class="mc-btn" id="setHp"></button>
+        <button class="mc-btn red" id="setWipe">Tüm Verileri Sil</button>
+      </div>
+      <div class="row"><button class="mc-btn wide" id="stBack">Bitti</button></div>
+    </div>
+
+    <!-- DURAKLATMA -->
+    <div class="screen dim" id="scrPause">
+      <h2>Oyun Durduruldu</h2>
+      <div class="col menu-btns">
+        <button class="mc-btn wide" id="psResume">Oyuna Dön</button>
+        <button class="mc-btn wide" id="psInv">Envanter</button>
+        <button class="mc-btn wide" id="psSettings">Ayarlar</button>
+        <button class="mc-btn wide" id="psBook">Ansiklopedi</button>
+        <button class="mc-btn wide" id="psRestart">Yeniden Başla</button>
+        <button class="mc-btn wide red" id="psQuit">Ana Menüye Dön</button>
+      </div>
+    </div>
+
+    <!-- ENVANTER -->
+    <div class="screen dim" id="scrInv">
+      <div class="inv-wrap">
+        <div class="mc-panel inv-panel">
+          <div class="inv-title"><span>Envanter</span><span class="inv-realm" id="invRealm"></span><span class="close-x" id="invClose">✕</span></div>
+          <div class="inv-cols">
+            <div class="inv-main">
+              <div class="inv-lbl">Kuleler <span class="gr2">— tıkla, sonra hızlı erişim çubuğunda bir yuvaya bırak (Shift+tık: ilk boş yuva)</span></div>
+              <div class="inv-grid" id="invTowers"></div>
+              <div class="inv-lbl">Eşyalar <span class="gr2">— Sandık: kazandığın dünyalardan kalan eşyalar saklanır</span></div>
+              <div class="inv-grid" id="invItems"></div>
+              <div class="inv-bars">
+                <div><div class="inv-lbl">Hızlı Erişim (1-9)</div><div class="inv-grid hb" id="invHotbar"></div></div>
+                <div><div class="inv-lbl">Kemer (Z X C V)</div><div class="inv-grid hb" id="invBelt"></div></div>
+              </div>
+            </div>
+            <div class="inv-side">
+              <div class="inv-lbl">Üretim</div>
+              <div id="invCraft"></div>
+              <div class="inv-info" id="invInfo">Bir kulenin ya da eşyanın üzerine gel.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SON -->
+    <div class="screen dim" id="scrEnd">
+      <div class="mc-panel" id="endBox" style="background:#1d1d1d;color:#fff;box-shadow:inset 3px 3px 0 #4a4a4a,inset -3px -3px 0 #0a0a0a">
+        <h2 id="endTitle">Zafer!</h2>
+        <div class="bigstars" id="endStars"></div>
+        <div id="endMsg" style="font-size:21px;color:#ccc"></div>
+        <div class="endstats" id="endStats"></div>
+        <div id="endLoot"></div>
+        <div class="row"><button class="mc-btn green" id="enAgain">Tekrar Oyna</button><button class="mc-btn" id="enNext">Sonraki Dünya</button><button class="mc-btn" id="enMenu">Dünya Seçimi</button></div>
+      </div>
+    </div>
+  </div>
+
+  <div id="xpwrap"><div id="xplvl">0</div><div id="xpbar"><div id="xpfill"></div></div></div>
+  <div id="bottombar">
+    <div id="abilities"></div>
+    <div class="hbwrap"><div id="hotbar"></div><div id="belt"></div></div>
+    <div id="wavebox"><div id="wavePreview"></div><button class="mc-btn green" id="btnWave">▶ Dalgayı Başlat</button></div>
+  </div>
+</div>
+<div class="tip" id="tooltip"></div>
+<div id="carry"></div>
+<script>/*@JS@*/</script>
+<!--@MUSIC@-->
+</body>
+</html>

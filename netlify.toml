@@ -1,0 +1,4 @@
+# The public site is the music-free build (see build.py --site).
+[build]
+  command = "python3 build.py --site"
+  publish = "dist"
