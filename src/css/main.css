@@ -283,3 +283,5 @@ body.menu #topbar,body.menu #bottombar,body.menu #xpwrap{display:none}
 .inv-info .t{font-size:21px;color:#1a1a1a}
 #carry{position:fixed;width:40px;height:40px;pointer-events:none;z-index:400;display:none;image-rendering:pixelated}
 #carry canvas{width:40px;height:40px;image-rendering:pixelated}
+/* Hosting: hide the badge iframe that Netlify injects on the live site (does nothing locally) */
+#nl-badge-frame,#nl-hud-frame{display:none!important}
